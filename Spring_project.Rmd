@@ -1,0 +1,534 @@
+---
+title: "Inscribe Student Activity Analysis"
+author: "Pramath Shukla"
+date: "2024-03-09"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, include=FALSE}
+library(knitr)
+library(ggplot2)
+```
+
+# Students Enrolled in Inscribe community compared to number of students enrolled in class section
+
+Total students enrolled in Inscribe community for Spring 2024 are 232
+
+Total students enrolled in respective class sections are 574
+
+\vspace{10mm}
+
+```{r compareEnrollment, echo=FALSE}
+# Example data frame
+my_data <- data.frame(
+  Sections = c(" 13081", "16190", "18392", "26576", "26763", "37447"),
+  Section_Enrollment = c(100, 97, 97, 102,103, 75),
+  Inscribe_Enrollment = c(0,0,30,75,79,48)
+)
+# Transpose the data frame
+my_data_transposed <- t(my_data)
+
+# Create a table using kable
+table <- kable(my_data_transposed, format = "markdown")
+
+table 
+```
+
+\vspace{10mm}
+
+```{r plotEnrollment, echo=FALSE}
+my_data_new <- data.frame(
+  Sections = c("18392", "26576", "26763", "37447"),
+  Section_Enrollment = c(97, 102,103, 75),
+  Inscribe_Enrollment = c(30,75,79,48)
+)
+
+# Reshape the data for ggplot2
+my_data_long <- tidyr::gather(my_data_new, key = "Enrollment_Type", value = "Enrollment", -Sections)
+
+# Create a grouped bar plot
+plot <- ggplot(my_data_long, aes(x = Sections, y = Enrollment, fill = Enrollment_Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Enrollment Comparison by Section",
+       x = "Sections",
+       y = "Enrollment",
+       fill = "Enrollment Type") +
+  theme_minimal() + theme(
+    text = element_text(size = 10)  # Adjust the font size here (change 10 to your desired size)
+  )
+plot
+```
+
+# Questions posted by students in Inscribe community 
+
+Number of students who posted questions in Inscribe community are 59. (It also includes students who just posted in Math Study Hall Channel)
+
+Total students enrolled in inscribe 232
+
+Percentage of students : 17.77%
+
+\vspace{10mm}
+
+```{r Questions, echo=FALSE}
+# Example data frame
+my_data <- data.frame(
+  Sections = c("18392", "26576", "26763", "37447"),
+  Inscribe_Enrollment = c(30,75,79,48),
+  Questions_Asked = c(2,19,11,14),
+  Percentage = c(6.67,25.33,13.92,29.17)
+)
+# Transpose the data frame
+my_data_transposed <- t(my_data)
+
+# Create a table using kable
+table <- kable(my_data_transposed, format = "markdown")
+
+table 
+```
+
+\vspace{10mm}
+
+```{r plotQuestions, echo=FALSE}
+my_data <- data.frame(
+  Sections = c("18392", "26576", "26763", "37447"),
+  Inscribe_Enrollment = c(30,75,79,48),
+  Questions_Asked = c(2,19,11,14),
+  Percentage = c(6.67,25.33,13.92,29.17)
+)
+
+# Reshape the data for ggplot2
+my_data_long <- tidyr::gather(my_data, key = "Variable", value = "Value", -Sections)
+
+# Create a grouped bar plot
+ggplot(my_data_long, aes(x = Sections, y = Value, fill = Variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison between Inscribe Enrollment and Questions Asked",
+       x = "Sections",
+       y = "Count",
+       fill = "Variable") +
+  theme_minimal()
+```
+
+\clearpage
+
+# Students who just viewed questions and question threads
+
+Number of students who viewed questions in Inscribe community are 151. (It also includes students who just viewed questions from Math Study Hall Channel)
+
+Total students enrolled in inscribe 232
+
+Percentage of students : 68.97%
+
+\vspace{10mm}
+
+```{r QuestionsViewed2024, echo=FALSE}
+# Example data frame
+my_data <- data.frame(
+  Sections = c("18392", "26576", "26763", "37447"),
+  Inscribe_Enrollment = c(30,75,79,48),
+  Questions_Viewed = c(12,51,39,37),
+  Percentage = c(40.00,68.00,49.37,77.08)
+)
+# Transpose the data frame
+my_data_transposed <- t(my_data)
+
+# Create a table using kable
+table <- kable(my_data_transposed, format = "markdown")
+
+table 
+```
+
+\vspace{10mm}
+
+```{r plotQuestionsViewed2024, echo=FALSE}
+my_data <- data.frame(
+  Sections = c("18392", "26576", "26763", "37447"),
+  Inscribe_Enrollment = c(30,75,79,48),
+  Questions_Viewed = c(12,51,39,37),
+  Percentage = c(40.00,68.00,49.37,77.08)
+)
+
+# Reshape the data for ggplot2
+my_data_long <- tidyr::gather(my_data, key = "Variable", value = "Value", -Sections)
+
+# Create a grouped bar plot
+ggplot(my_data_long, aes(x = Sections, y = Value, fill = Variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison between Inscribe Enrollment and Questions Asked",
+       x = "Sections",
+       y = "Count",
+       fill = "Variable") +
+  theme_minimal()
+```
+
+\clearpage
+
+
+# Students who viewed questions/threads and also gave reactions
+
+Number of students who viewed questions and question threads : 151
+
+Number of students who also gave reactions : 45
+
+Percentage of students who gave reactions : 29.80%
+
+\vspace{10mm}
+
+```{r ReactionsGiven2024, echo=FALSE}
+# Example data
+data <- data.frame(
+  Category = c("Viewed", "Gave Reactions", "Did Not Give Reactions"),
+  Count = c(151, 45, 151 - 45),
+  Percentage = c(100, 29.80, 100 - 29.80)
+)
+
+# Create a bar plot
+ggplot(data, aes(x = Category, y = Count, fill = Category)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(title = "Students' Interaction with Questions",
+       y = "Number of Students") +
+  geom_text(aes(label = paste0(Count, " (", sprintf("%.2f", Percentage), "%)")),
+            position = position_stack(vjust = 0.5)) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+\clearpage
+
+# Students enrolled in inscribe community who posted a resource
+
+Total number of students enrolled : 232
+
+Number of students who posted resources : 49
+
+Percentage of students who posted resources : 21.12%
+
+\vspace{10mm}
+
+```{r PostedResources2024, echo=FALSE}
+# Example data
+data <- data.frame(
+  Category = c("Enrolled", "Posted Resources", "Did Not Posted Resource"),
+  Count = c(232, 49, 232 - 49),
+  Percentage = c(100, 21.12, 100 - 21.12)
+)
+
+# Create a bar plot
+ggplot(data, aes(x = Category, y = Count, fill = Category)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(title = "Students' Interaction with Resources",
+       y = "Number of Students") +
+  geom_text(aes(label = paste0(Count, " (", sprintf("%.2f", Percentage), "%)")),
+            position = position_stack(vjust = 0.5)) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+\clearpage
+
+# Students enrolled in inscribe community and viewed a resource
+
+Total number of students enrolled : 232
+
+Number of students who viewed resources : 65
+
+Percentage of students who viewed resources : 28.02%
+
+\vspace{10mm}
+
+```{r viewedResources2024, echo=FALSE}
+# Example data
+data <- data.frame(
+  Category = c("Enrolled", "Viewed Resources", "Did Not Viewed Resource"),
+  Count = c(232, 65, 232 - 65),
+  Percentage = c(100, 28.02, 100 - 28.02)
+)
+
+# Create a bar plot
+ggplot(data, aes(x = Category, y = Count, fill = Category)) +
+  geom_bar(stat = "identity", color = "white") +
+  labs(title = "Students' Interaction with Resources",
+       y = "Number of Students") +
+  geom_text(aes(label = paste0(Count, " (", sprintf("%.2f", Percentage), "%)")),
+            position = position_stack(vjust = 0.5)) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+\clearpage
+
+## Spring A 2023 vs Spring A 2024
+
+\vspace{5mm}
+
+# Comparision of number of students enrolled in class sections compared to their enrollment in inscribe
+
+\vspace{5mm}
+
+Spring A 2023 : 
+
+Total Students enrolled in respective class sections : 454
+
+Number of Students enrolled in inscribe :  204
+
+Spring A 2024 :
+
+Total Students enrolled in respective class sections :  574
+
+Number of Students enrolled in inscribe :  232
+
+\vspace{10mm}
+
+```{r EnrollmentCom, echo=FALSE}
+# Example data
+enrollment_data <- data.frame(
+  Semester = c("Spring A 2023", "Spring A 2024"),
+  Class_Sections = c(454, 574),
+  Inscribe_Enrollment = c(204, 232)
+)
+
+# Reshape the data for ggplot2
+enrollment_data_long <- tidyr::gather(enrollment_data, key = "Enrollment_Type", value = "Enrollment", -Semester)
+
+# Create a grouped bar plot with data labels
+ggplot(enrollment_data_long, aes(x = Semester, y = Enrollment, fill = Enrollment_Type)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(label = Enrollment), position = position_dodge(width = 0.9), vjust = -0.5) +  # Add data labels
+  labs(title = "Comparison of Enrollment for Spring A 2023 and Spring A 2024",
+       x = "Semester",
+       y = "Number of Students",
+       fill = "Enrollment Type") +
+  theme_minimal()
+```
+
+\clearpage
+
+# Comparision of number of students who posted questions on inscribe 
+
+Spring A 2023 : 
+
+Number of students who posted questions in Inscribe community are 86. (It also includes students who just posted in Math Study Hall Channel)
+
+Total students enrolled in inscribe : 204
+
+Percentage of students : 42.16%
+
+Spring A 2024 :
+
+Number of students who posted questions in Inscribe community are 59. (It also includes students who just posted in Math Study Hall Channel)
+
+Total students enrolled in inscribe : 232
+
+Percentage of students : 17.77%
+
+\vspace{10mm}
+
+```{r QuestionsPosted, echo=FALSE}
+# Example data
+data <- data.frame(
+  Semester = c("Spring A 2023", "Spring A 2024"),
+  Posted_Questions = c(86, 59),
+  Total_Enrolled = c(204, 232),
+  Percentage = c(42.16, 17.77)
+)
+
+# Reshape the data for ggplot2
+data_long <- tidyr::gather(data, key = "Variable", value = "Value", -Semester)
+
+# Create a grouped bar plot
+ggplot(data_long, aes(x = Semester, y = Value, fill = Variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison of Inscribe Community Engagement",
+       x = "Semester",
+       y = "Count/Percentage",
+       fill = "Variable") +
+  geom_text(aes(label = Value), position = position_dodge(width = 0.9), vjust = -0.5) +  # Add data labels
+  theme_minimal()
+```
+
+\clearpage
+
+# Comparision of number of students who viewed questions on inscribe 
+
+Spring A 2023 : 
+
+Number of students who viewed questions in Inscribe community are 170. (It also includes students who just viewed questions from Math Study Hall Channel)
+
+Total students enrolled in inscribe : 204
+
+Percentage of students : 83.33%
+
+Spring A 2024 :
+
+Number of students who viewed questions in Inscribe community are 151. (It also includes students who just viewed questions from Math Study Hall Channel)
+
+Total students enrolled in inscribe : 232
+
+Percentage of students : 68.97%
+
+\vspace{10mm}
+
+```{r QuestionsViewed, echo=FALSE}
+# Example data
+data <- data.frame(
+  Semester = c("Spring A 2023", "Spring A 2024"),
+  Viewed_Questions = c(170, 151),
+  Total_Enrolled = c(204, 232),
+  Percentage = c(83.33, 68.97)
+)
+
+# Reshape the data for ggplot2
+data_long <- tidyr::gather(data, key = "Variable", value = "Value", -Semester)
+
+# Create a grouped bar plot
+ggplot(data_long, aes(x = Semester, y = Value, fill = Variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison of Inscribe Community Engagement",
+       x = "Semester",
+       y = "Count/Percentage",
+       fill = "Variable") +
+  geom_text(aes(label = Value), position = position_dodge(width = 0.9), vjust = -0.5) +  # Add data labels
+  theme_minimal()
+```
+
+\clearpage
+
+# Students who viewed questions/threads and also gave reactions
+
+Spring A 2023 : 
+
+Number of students who viewed questions and question threads : 170
+
+Number of students who also gave reactions : 74
+
+Percentage of students who gave reactions : 43.53%
+
+Spring A 2024 : 
+
+Number of students who viewed questions and question threads : 151
+
+Number of students who also gave reactions : 45
+
+Percentage of students who gave reactions : 29.80%
+
+\vspace{10mm}
+
+```{r GaveReactions, echo=FALSE}
+# Example data
+data <- data.frame(
+  Semester = c("Spring A 2023", "Spring A 2024"),
+  Gave_Reaction = c(74, 45),
+  Viewed_Question = c(170, 151),
+  Percentage = c(43.53, 29.80)
+)
+
+# Reshape the data for ggplot2
+data_long <- tidyr::gather(data, key = "Variable", value = "Value", -Semester)
+
+# Create a grouped bar plot
+ggplot(data_long, aes(x = Semester, y = Value, fill = Variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison of Inscribe Community Engagement",
+       x = "Semester",
+       y = "Count/Percentage",
+       fill = "Variable") +
+  geom_text(aes(label = Value), position = position_dodge(width = 0.9), vjust = -0.5) +  # Add data labels
+  theme_minimal()
+```
+
+\clearpage
+
+# Students enrolled in inscribe community who posted resources 
+
+Spring A 2023 : 
+
+Total number of students enrolled : 204
+
+Number of students who posted resources : 79
+
+Percentage of students who posted resources : 38.73%
+
+Spring A 2024 : 
+
+Total number of students enrolled : 232
+
+Number of students who posted resources : 49
+
+Percentage of students who posted resources : 21.12%
+
+\vspace{10mm}
+
+```{r Postedresources, echo=FALSE}
+# Example data
+data <- data.frame(
+  Semester = c("Spring A 2023", "Spring A 2024"),
+  Posted_Resources = c(79,49),
+  Enrolled = c(204,232),
+  Percentage = c(38.73, 21.12)
+)
+
+# Reshape the data for ggplot2
+data_long <- tidyr::gather(data, key = "Variable", value = "Value", -Semester)
+
+# Create a grouped bar plot
+ggplot(data_long, aes(x = Semester, y = Value, fill = Variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison of Inscribe Community Engagement",
+       x = "Semester",
+       y = "Count/Percentage",
+       fill = "Variable") +
+  geom_text(aes(label = Value), position = position_dodge(width = 0.9), vjust = -0.5) +  # Add data labels
+  theme_minimal()
+```
+
+\clearpage
+
+# Students enrolled in inscribe community who viewed Resources 
+
+Spring A 2023 : 
+
+Total number of students enrolled : 204
+
+Number of students who viewed resources : 69
+
+Percentage of students who viewed resources : 33.82%
+
+Spring A 2024 : 
+
+Total number of students enrolled : 232
+
+Number of students who viewed resources : 65
+
+Percentage of students who viewed resources : 28.02%
+
+\vspace{10mm}
+
+```{r ViewedResources, echo=FALSE}
+# Example data
+data <- data.frame(
+  Semester = c("Spring A 2023", "Spring A 2024"),
+  Viewed_Resources = c(69, 65),
+  Enrolled = c(204, 232),
+  Percentage = c(33.82, 28.02)
+)
+
+# Reshape the data for ggplot2
+data_long <- tidyr::gather(data, key = "Variable", value = "Value", -Semester)
+
+# Create a grouped bar plot
+ggplot(data_long, aes(x = Semester, y = Value, fill = Variable)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(title = "Comparison of Inscribe Community Engagement",
+       x = "Semester",
+       y = "Count/Percentage",
+       fill = "Variable") +
+  geom_text(aes(label = Value), position = position_dodge(width = 0.9), vjust = -0.5) +  # Add data labels
+  theme_minimal()
+```
